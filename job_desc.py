@@ -112,6 +112,6 @@ df.to_csv(csv_buffer)
 cli.put_object(
     Body = csv_buffer.getvalue(),
     Bucket='scrapedjob',
-    Key='linkedin_job_list_new.csv'
+    Key=f'linkedin_job_list_new{page}.csv'
 )
 # df.to_csv('Linkedin_job_list_new.csv')

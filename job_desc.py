@@ -73,7 +73,7 @@ def main_scraper(soup):
 
 
 def scrape_job_description(apply_link):
-    # try:
+    try:
         # driver_path = "C:/Users/HUSSIEN/Downloads/chromedriver-win64/chromedriver.exe"
         # options = webdriver.ChromeOptions()
         chrome_options = Options()
@@ -87,14 +87,14 @@ def scrape_job_description(apply_link):
         # Wait until the job description element is present on the page
         description_element_present = EC.presence_of_element_located((By.CLASS_NAME, "description__text"))
         
-        WebDriverWait(driver, 30).until(description_element_present)
+        WebDriverWait(driver, 10).until(description_element_present)
 
         description_soup = BeautifulSoup(driver.page_source, "html.parser")
         driver.quit()
         return description_soup
-    # except Exception as e:
-    #     print(f"Error during scraping: {str(e)}")
-    #     return None
+    except Exception as e:
+        print(f"Error during scraping: {str(e)}")
+        return None
 
 
 

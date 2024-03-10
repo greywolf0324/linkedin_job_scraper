@@ -87,7 +87,7 @@ def scrape_job_description(apply_link):
         # Wait until the job description element is present on the page
         description_element_present = EC.presence_of_element_located((By.CLASS_NAME, "description__text"))
         
-        WebDriverWait(driver, 10).until(description_element_present)
+        WebDriverWait(driver, 30).until(description_element_present)
 
         description_soup = BeautifulSoup(driver.page_source, "html.parser")
         driver.quit()

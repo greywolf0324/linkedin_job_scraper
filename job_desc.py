@@ -69,6 +69,7 @@ def main_scraper(soup):
             job['Description'] = job_description
 
             joblist.append(job)
+            print("order: ", i)
     return joblist
 
 

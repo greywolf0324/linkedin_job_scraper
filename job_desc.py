@@ -48,6 +48,7 @@ def main_scraper(soup):
             # Add job description scraping logic here
             # Navigate to the job posting page and scrape the description
             apply_link = f'{link}'
+            print(apply_link)
             description_soup = scrape_job_description(apply_link)
 
             # Sleeping randomly

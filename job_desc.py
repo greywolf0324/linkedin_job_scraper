@@ -10,6 +10,11 @@ from selenium.webdriver.support import expected_conditions as EC
 import undetected_chromedriver as uc
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+import boto3
+from datetime import datetime
+from io import StringIO
+
+cli = boto3.client('s3')
 
 def scrape(page, job_title, job_location):
     job_title = job_title.replace(" ", "%20")
@@ -25,45 +30,44 @@ def main_scraper(soup):
     jobs = soup.find_all('div', class_="base-card relative w-full hover:no-underline focus:no-underline base-card--link base-search-card base-search-card--link job-search-card")
     print(len(jobs), "_+")
     for i, item in enumerate(jobs):
-        if i < 5:
-            title = item.find('a').text.strip()
-            company = item.find('h4').text.strip()
-            link = item.a['href']
-            location = item.find('span', class_='job-search-card__location').text.strip()
-            job_posted = item.find('time', class_='job-search-card__listdate')
-            if job_posted is not None:
-                time_posted = job_posted.text.strip()
-                job = {
-                    'Title': title,
-                    'Link': link,
-                    'Company': company,
-                    'Location': location,
-                    'Job_posted': time_posted
-                }
+        title = item.find('a').text.strip()
+        company = item.find('h4').text.strip()
+        link = item.a['href']
+        location = item.find('span', class_='job-search-card__location').text.strip()
+        job_posted = item.find('time', class_='job-search-card__listdate')
+        if job_posted is not None:
+            time_posted = job_posted.text.strip()
+            job = {
+                'Title': title,
+                'Link': link,
+                'Company': company,
+                'Location': location,
+                'Job_posted': time_posted
+            }
 
-                # Add job description scraping logic here
-                # Navigate to the job posting page and scrape the description
-                apply_link = f'{link}'
-                description_soup = scrape_job_description(apply_link)
+            # Add job description scraping logic here
+            # Navigate to the job posting page and scrape the description
+            apply_link = f'{link}'
+            description_soup = scrape_job_description(apply_link)
 
-                # Sleeping randomly
-                time.sleep(random.choice(list(range(5, 11))))
-                print("-----------------------------------------------------------")
-                print(description_soup)
-                print("-----------------------------------------------------------")
-                try:
-                    job_description = description_soup.find(
-                        "div", class_="description__text description__text--rich"
-                    ).text.strip()
-                except AttributeError:
-                    job_description = None
-                print("***********************************************************************")
-                print(job_description)
-                print("***********************************************************************")
-                # Add job description to the job dictionary
-                job['Description'] = job_description
+            # Sleeping randomly
+            time.sleep(random.choice(list(range(5, 11))))
+            print("-----------------------------------------------------------")
+            print(description_soup)
+            print("-----------------------------------------------------------")
+            try:
+                job_description = description_soup.find(
+                    "div", class_="description__text description__text--rich"
+                ).text.strip()
+            except AttributeError:
+                job_description = None
+            print("***********************************************************************")
+            print(job_description)
+            print("***********************************************************************")
+            # Add job description to the job dictionary
+            job['Description'] = job_description
 
-                joblist.append(job)
+            joblist.append(job)
     return joblist
 
 
@@ -103,4 +107,11 @@ for job in job_list:
 
 # Save job list to CSV
 df = pd.DataFrame(job_list)
-df.to_csv('Linkedin_job_list_new.csv')
+csv_buffer = StringIO()
+df.to_csv(csv_buffer)
+cli.put_object(
+    Body = csv_buffer.getvalue(),
+    Bucket='scrapedjob',
+    Key='linkedin_job_list_new.csv'
+)
+# df.to_csv('Linkedin_job_list_new.csv')

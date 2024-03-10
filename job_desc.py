@@ -79,7 +79,7 @@ def scrape_job_description(apply_link):
         chrome_options = Options()
         
         chrome_options.add_argument("--headless=new")
-        driver = webdriver.Chrome(service=ChromeDriverManager().install(), options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options)
         # driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=chrome_options)
         
         driver.get(apply_link)

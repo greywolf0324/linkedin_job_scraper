@@ -53,9 +53,9 @@ def main_scraper(soup):
 
             # Sleeping randomly
             time.sleep(random.choice(list(range(1, 3))))
-            print("-----------------------------------------------------------")
-            print(description_soup)
-            print("-----------------------------------------------------------")
+            # print("-----------------------------------------------------------")
+            # print(description_soup)
+            # print("-----------------------------------------------------------")
             try:
                 job_description = description_soup.find(
                     "div", class_="description__text description__text--rich"
@@ -96,10 +96,6 @@ def scrape_job_description(apply_link):
     except Exception as e:
         print(f"Error during scraping: {str(e)}")
         return None
-
-
-
-
 
 page = int(input(f'Enter the page number you are looking for: '))
 c = scrape(page, "Financial Manager", "United Kingdom")

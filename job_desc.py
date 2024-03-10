@@ -51,7 +51,7 @@ def main_scraper(soup):
             description_soup = scrape_job_description(apply_link)
 
             # Sleeping randomly
-            time.sleep(random.choice(list(range(5, 11))))
+            time.sleep(random.choice(list(range(1, 3))))
             print("-----------------------------------------------------------")
             print(description_soup)
             print("-----------------------------------------------------------")

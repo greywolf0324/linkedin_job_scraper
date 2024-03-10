@@ -77,8 +77,9 @@ def scrape_job_description(apply_link):
         # driver_path = "C:/Users/HUSSIEN/Downloads/chromedriver-win64/chromedriver.exe"
         # options = webdriver.ChromeOptions()
         chrome_options = Options()
-        print(1)
+        
         chrome_options.add_argument("--headless=new")
+        print(1)
         driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=chrome_options)
         
         driver.get(apply_link)

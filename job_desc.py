@@ -77,9 +77,10 @@ def scrape_job_description(apply_link):
         # driver_path = "C:/Users/HUSSIEN/Downloads/chromedriver-win64/chromedriver.exe"
         # options = webdriver.ChromeOptions()
         chrome_options = Options()
+        print(1)
         chrome_options.add_argument("--headless=new")
         driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=chrome_options)
-        print(1)
+        
         driver.get(apply_link)
 
         # Wait until the job description element is present on the page

@@ -91,6 +91,7 @@ def scrape_job_description(apply_link):
 
         description_soup = BeautifulSoup(driver.page_source, "html.parser")
         driver.quit()
+        print(1)
         return description_soup
     except Exception as e:
         print(f"Error during scraping: {str(e)}")
